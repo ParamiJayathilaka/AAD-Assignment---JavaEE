@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  <meta content="width=device-width initial-scale=1" name="viewport">
+  <link rel="stylesheet" href="assests/boostrap/css/bootstrap.css">
+  <link rel="stylesheet" href="assests/boostrap/css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@600&family=Borel&family=Bubbler+One&family=Explora&family=Gabriela&family=Give+You+Glory&family=Joti+One&family=Judson&family=Junge&family=Kadwa&family=Kaisei+Opti&family=Kalam:wght@300&family=Kanit:wght@100&family=Kantumruy+Pro:ital,wght@0,500;1,500&family=Karma:wght@300&family=Kaushan+Script&family=Kumar+One&family=Ledger&family=Lemon&family=Libre+Baskerville&family=Oswald:wght@200;300&family=Roboto:ital,wght@0,100;1,100&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@600&family=Bigshot+One&family=Borel&family=Bubbler+One&family=Explora&family=Gabriela&family=Give+You+Glory&family=Joti+One&family=Judson&family=Junge&family=Kadwa&family=Kaisei+Opti&family=Kalam:wght@300&family=Kanit:wght@100&family=Kantumruy+Pro:ital,wght@0,500;1,500&family=Karma:wght@300&family=Kaushan+Script&family=Kumar+One&family=Ledger&family=Lemon&family=Libre+Baskerville&family=Oswald:wght@200;300&family=Roboto:ital,wght@0,100;1,100&display=swap" rel="stylesheet">
+
+  <style>
+    ul > li {
+      cursor: pointer;
+    }
+  </style>
+  <script src="assests/boostrap/js/jquery-3.7.1.min.js"></script>
+  <script src="Controllers/OrderPurchaseController.js"></script>
+
+
+</head>
+<body style="background: url(assests/image/blue-background-7470781_1280.jpg)">
+<!--header-->
+<header class="jumbotron text-white p-4" style="background: url(assests/image/360_F_309246316_uXQOS2tcdUceurcmAJprpxBbbktiSW0C.jpg)">
+  <h3 class="position-absolute justify-content-lg-start" id="nav" style="font-family: 'Bigshot One', serif;" >Cool <br> Planet</h3>
+  <ul class="list-group list-group-horizontal text-white justify-content-lg-end font-weight-bold " >
+    <li class="list-group-item bg-black text-white me-3 border-2 border-dark" style="border-radius: 30px; " id="lnkHome"><a class="text-white" href="#">Home</a></li>
+    <li class="list-group-item bg-black  text-white me-3 border-2 border-dark" style="border-radius: 30px; " id="lnkCustomer"><a href="#">Customer</a></li>
+    <li class="list-group-item bg-black text-white me-3 border-2 border-dark" style="border-radius: 30px;" id="lnkItem"><a href="#">Item</a></li>
+    <li class="list-group-item bg-black text-white me-3 border-2 border-dark" style="border-radius: 30px;" id="lnkOrders"><a href="#">Orders</a></li>
+  </ul>
+</header>
+
+<!--display-->
+<main class="container-fluid " id="dashboardContent" >
+  <div class="jumbotron pt-md-5">
+    <div id="home-tiles">
+      <div class="row ">
+        <div class="col-lg-6 col-xl-3 mb-2">
+          <div class="card">
+            <div class="card-header bg-dark text-white font-weight-bolder">Customers</div>
+            <div class="card-body position-relative" style=" height: 20vw; background: url(assests/image/3d-fluency-three-men.png); background-position:center; background-size: contain; background-repeat: no-repeat; ">
+              <div class="dash-tile-icon"><i class="fas fa-users"></i></div>
+              <div class="dash-tile-text text-left text-info"><h2>10</h2></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 col-xl-3 mb-2">
+          <div class="card">
+            <div class="card-header bg-dark text-white font-weight-bolder ">Items</div>
+            <div class="card-body" style=" height: 20vw; background: url(assests/image/3d-casual-life-e-commerce-completed-order.png); background-position:center; background-size: contain; background-repeat: no-repeat; ">
+              <div class="dash-tile-icon"><i class="fas fa-cubes"></i></div>
+              <div class="dash-tile-text text-right text-black"><h2>25</h2></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 col-xl-3 mb-2">
+          <div class="card" >
+            <div class="card-header bg-dark text-white font-weight-bolder">My Orders</div>
+            <div class="card-body" style=" height: 20vw; background: url(assests/image/3d-casual-life-delivery-package-boxes.png); background-position:center; background-size: contain; background-repeat: no-repeat; ">
+              <div class="dash-tile-icon"><i class="fas fa-shopping-cart"></i></div>
+              <div class="dash-tile-text text-right text-black"><h2>18</h2></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 col-xl-3 mb-2">
+          <div class="card">
+            <div class="card-header bg-dark text-white font-weight-bolder">Settings</div>
+            <div class="card-body" style=" height: 20vw; background: url(assests/image/3d-casual-life-laptop-greentech.png); background-position:center; background-size: contain; background-repeat: no-repeat; ">
+              <div class="dash-tile-icon" style=""><i class="fas fa-cogs"></i></div>
+              <div class="dash-tile-text text-right text-black">
+                <h2>
+                  <button class="btn btn-success bg-dark text-white">new</button>
+                </h2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!--customer-->
+<main class="container-fluid" id="customerContent">
+  <section class="row ">
+    <div class="col-12 col-lg-4 ">
+      <h1 class="text-dark">Customer Registration</h1>
+
+      <div class="form-group">
+        <label for="txtCustomerID" class="text-white">Customer ID</label>
+        <input class="form-control text-bg-dark" id="txtCustomerID" required type="text">
+        <span class="control-error" id="lblcusid"></span>
+      </div>
+      <div class="form-group">
+        <label for="txtCustomerName" class="text-white">Customer Name</label>
+        <input class="form-control text-bg-dark" id="txtCustomerName" type="text">
+        <span class="control-error" id="lblcusname"></span>
+      </div>
+      <div class="form-group">
+        <label for="txtCustomerAddress" class="text-white">Customer Address</label>
+        <input class="form-control text-bg-dark" id="txtCustomerAddress" type="text">
+        <span class="control-error" id="lblcusaddress"></span>
+      </div>
+
+
+
+      <div class="btn-group ">
+        <button class="btn btn-primary" id="btnCustomer">Save Customer</button>
+        <button class="btn btn-primary" id="getAll">Get Customer</button>
+        <button class="btn btn-danger" id="btnCusDelete">Remove</button>
+        <button class="btn btn-warning" id="btnUpdate">Update</button>
+        <button class="btn btn-success" id="btn-clear1">Clear All</button>
+      </div>
+
+    </div>
+    <div class="col-12 col-lg-8 mt-3">
+      <table class="table table-bordered table-hover">
+        <thead class="bg-danger text-white">
+        <tr>
+          <th>Customer ID</th>
+          <th>Customer Name</th>
+          <th>Customer Address</th>
+        </tr>
+        </thead>
+
+        <tbody id="tblCustomer">
+
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<!--item-->
+<main class="container-fluid" id="itemContent">
+  <section class="row">
+    <div class="col-12 col-lg-4">
+      <h1 class="text-dark">Item Form</h1>
+
+      <div class="form-group">
+        <label for="inputItemCode"  class="text-white">Item Code</label>
+        <input class="form-control text-bg-dark" id="inputItemCode" type="text">
+        <span class="control-error" id="lblCode"></span>
+      </div>
+      <div class="form-group">
+        <label for="inputItemName" class="text-white">Item Name</label>
+        <input class="form-control text-bg-dark" id="inputItemName" type="text">
+        <span class="control-error" id="lblname"></span>
+      </div>
+      <div class="form-group">
+        <label for="inputItemQty" class="text-white">Item Qty</label>
+        <input class="form-control text-bg-dark" id="inputItemQty" type="text">
+        <span class="control-error" id="lblqty"></span>
+      </div>
+      <div class="form-group">
+        <label for="inputItemPrice" class="text-white">Unit Price</label>
+        <input class="form-control text-bg-dark" id="inputItemPrice" type="text">
+        <span class="control-error" id="lblprice"></span>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="btnItem">Add Item</button>
+        <button class="btn btn-danger" id="btnItemDelete">Remove</button>
+        <button class="btn btn-warning" id="btnItemUpdate">Update</button>
+<!--        <button class="btn btn-success" id="btnItemGetAll">Get All</button>-->
+        <button class="btn btn-success" id="btn-clear">Clear All</button>
+      </div>
+
+    </div>
+    <div class="col-12 col-lg-8 mt-3">
+      <table class="table table-bordered table-hover">
+        <thead class="bg-danger text-white">
+        <tr>
+          <th>Item Code</th>
+          <th>Item Name</th>
+          <th>Item Qty</th>
+          <th>Item Price</th>
+        </tr>
+        </thead>
+        <tbody id="tblItem">
+
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</main>
+
+<!--order-->
+<main class="container-fluid" id="orderContent" >
+  <div class="container-fluid mt-2" >
+    <div class="row border" >
+      <div class="col-12 col-md-4  mt-3 p-3 text-primary-emphasis  border border-primary-subtle rounded-3"
+           style="border-radius: 10px; border: 2px solid #02e9ff; background-color: #000000">
+        <h4 style="text-align: center; color: #05d5e8; ">Invoice Details</h4>
+        <div class="row g-2" style="color: white">
+          <div class="col-6">
+            <label for="OrderId" class="form-label">Order Id :</label>
+            <input type="text" id="OrderId" class="form-control" placeholder="Order Id" aria-label="Last name" style="background-color: #334344; color: white">
+            <label for="OrderId" id="OrderNotTypeId" class="form-label" style="display: none;color: #07f6df"> :</label>
+          </div>
+          <div class="col-6">
+            <label for="date" class="form-label">Order Date :</label>
+            <input type="date" id="date" class="form-control" placeholder="Order Date" aria-label="Order Date" style="background-color: #334344; color: white">
+          </div>
+          <div class="col-6">
+            <label for="CustominputState" class="form-label">Customer :</label>
+            <select id="CustominputState" class="form-select" style="background-color: #334344; color: white">
+
+            </select>
+          </div>
+          <div class="col-6">
+            <label for="custIdSetOrder" class="form-label" >Customer Id :</label>
+            <input type="text" id="custIdSetOrder" class="form-control" placeholder="Customer Id" aria-label="Last name" style="background-color: #334344; color: white">
+          </div>
+          <div class="col-6">
+            <label for="custNameSetOrder" class="form-label" >Customer Name :</label>
+            <input type="text" id="custNameSetOrder" class="form-control" placeholder="Customer Name" aria-label="Last name" style="background-color: #334344; color: white">
+          </div>
+
+          <div class="col-6">
+            <label for="custAddressSetOrder" class="form-label">Customer Address :</label>
+            <input type="text" id="custAddressSetOrder" class="form-control" placeholder="Address" aria-label="Last name" style="background-color: #334344; color: white">
+          </div>
+        </div>
+      </div>
+      <div
+              class="col-12 col-md-4  mt-3 p-3 text-primary-emphasis  border border-primary-subtle rounded-3"
+              style="border-radius: 10px; border: 2px solid #00f7ff; background-color: #000000">
+        <!--item section-->
+        <h4 style="text-align: center; color: #05f7ff">Item Select</h4>
+        <div class="row g-2" style="color: white">
+          <div class="col-6">
+            <label for="IteminputState" class="form-label">Item :</label>
+            <select id="IteminputState" class="form-select" style="background-color: #334344; color: white">
+
+            </select>
+          </div>
+          <div class="col-6">
+            <label for="ItemIdSetOrder" class="form-label">Item Code :</label>
+            <input type="text" id="ItemIdSetOrder" class="form-control" placeholder="Item Code" aria-label="Last name" style="background-color: #334344; color: white">
+          </div>
+          <div class="col-4">
+            <label for="ItemNameSetOrder" class="form-label">Item Name :</label>
+            <input type="text" id="ItemNameSetOrder" class="form-control" placeholder="Item Name" aria-label="Last name" style="background-color: #334344; color: white">
+          </div>
+          <div class="col-4">
+            <label for="ItemPriceSetOrder" class="form-label">Price :</label>
+            <input type="text" id="ItemPriceSetOrder" class="form-control" placeholder="Price" aria-label="Last name" style="background-color: #334344; color: white">
+          </div>
+          <div class="col-4">
+            <label for="ItemQTYSetOrder" class="form-label">QtyOnHand :</label>
+            <input type="text" id="ItemQTYSetOrder" class="form-control" placeholder="QtyOnHand" aria-label="Last name" style="background-color: #334344; color: white">
+          </div>
+          <div class="col-12">
+            <label class="form-label">OrderQty :</label>
+            <input type="text" id="ChoiceQTYOrder" class="form-control" placeholder="OrderQty" aria-label="Last name" style="background-color: #334344; color: white">
+            <div style="display: flex">
+              <label id="qtymassage" class="form-label" style="font-size: 12px; color: red; display: none">Please enter amount lower than :</label>
+              <label id="h1hello" style="position:relative;font-size: 12px; color: red; left:1%; display: none"> </label>
+            </div>
+          </div>
+
+        </div>
+        <div class="d-flex justify-content-end">
+          <button id="addToCardOrder" type="button" class="btn btn-success mt-3  " style="background-color: #00e4fc; color:black ;">AddToCart</button>
+        </div>
+
+        <!--porch section-->
+      </div>
+      <div
+              class="col-12 col-md-4  mt-3 p-3 text-primary-emphasis  border border-primary-subtle rounded-3"
+              style="border-radius: 10px; border: 2px solid #00f2fc; background-color: #050505">
+        <h2 style="color: #00c4ff">Total : RS <span id="lableTotPrice">0</span>/=</h2>
+        <h2 style=" color: #00b7ff">SubTotal : RS <span id="lableSubTotal">0</span>/=</h2>
+        <div class="row g-2" style="color: white">
+          <div class="col-6">
+            <label for="inputCash" class="form-label">Cash :</label>
+            <input type="text" id="inputCash" class="form-control" placeholder="Cash" aria-label="First name" style="background-color: #334344; color: white">
+            <div style="display: flex">
+              <label id="cashLOwMasse" class="form-label" style="font-size: 12px; color: #ff0000; display: none">Please enter amount greater than :</label>
+              <label id="cashShow" style="position:relative;font-size: 12px; color: #ff0000; left:1%; display: none"> </label>
+            </div>
+          </div>
+          <div class="col-6">
+            <label for="discount" class="form-label">Discount :</label>
+            <input type="number" id="discount" class="form-control" placeholder="Discount" aria-label="Last name" style="background-color: #334344; color: white">
+          </div>
+          <div class="col-12">
+            <label for="BalanceInput" class="form-label">Balance :</label>
+            <input type="text" id="BalanceInput" class="form-control" placeholder="Balance" aria-label="Last name" style="background-color: #334344; color: white">
+          </div>
+          <div class="d-flex justify-content-center">
+            <button id="purchase" type="button" class="btn btn-success" style="width: 30%;  background-color: #00e4fc; color:black ;">Purchase</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!--Table-->
+  <div class="table-responsive  mt-5 " style="height: 145px; bottom:35px; position: relative;">
+    <table id="clickTable" class="table table-bordered table-hover table-striped-columns " >
+      <thead>
+      <tr class="table mt-5 p-3 text-primary-emphasis bg-primary-subtle border border-primary-subtle rounded-3">
+        <th class="bg-primary-subtle">Item Code</th>
+        <th class="bg-primary-subtle">Item Name</th>
+        <th class="bg-primary-subtle">Price</th>
+        <th class="bg-primary-subtle">Quantity</th>
+        <th class="bg-primary-subtle">Total</th>
+      </tr>
+      </thead>
+      <tbody id="TBodyOrder">
+
+      </tbody>
+    </table>
+  </div>
+
+
+</main>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script src="assests/boostrap/js/jquery-3.7.1.min.js"></script>
+
+<script src="assests/boostrap/js/bootstrap.bundle.js"></script>
+<script src="assests/boostrap/js/jquery-3.7.1.min.js"></script>
+<script src="Controllers/dashBoard.js"></script>
+<script src="DB/DB.js"></script>
+
+
+<!--<script src="Controllers/Validation/CustomerValidation.js"></script>-->
+<script type="module" src="Controllers/CustomerController.js"></script>
+<!--<script src="Module/Customer.js"></script>-->
+
+<script type="module" src="Controllers/ItemController.js"></script>
+<!--<script src="Controllers/Validation/ItemValidation.js"></script>-->
+<!--<script src="Module/Item.js"></script>-->
+
+<script type="module" src="Controllers/OrderPurchaseController.js"></script>
+<!--<script src="Controllers/Validation/OrderValidation.js"></script>-->
+<!--<script src="Module/Order.js"></script>-->
+
+
+</body>
+</html>
