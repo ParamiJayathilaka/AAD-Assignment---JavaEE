@@ -7,6 +7,7 @@ import dto.ItemDTO;
 import entity.ItemEntity;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class ItemBOImpl implements ItemBO {
     ItemDAO itemDAO = DAOFactory.getDaoFactory().getDAO(DAOFactory.DAOTypes.ITEMDAO);
     @Override
     public List<ItemDTO> getAllItem(Connection connection) {
-        List<ItemEntity> itemEntityList = itemDAO.getAll();
+        List<ItemEntity> itemEntityList = itemDAO.getAll(connection);
         List<ItemDTO> itemDTOList = new ArrayList<>();
         ItemDTO itemDTO;
 
@@ -27,21 +28,21 @@ public class ItemBOImpl implements ItemBO {
     }
 
     @Override
-    public boolean saveItem(ItemDTO itemDTO ,Connection connection) {
+    public boolean saveItem(ItemDTO itemDTO ,Connection connection) throws SQLException {
         ItemEntity itemEntity = new ItemEntity(itemDTO.getCode(), itemDTO.getDescription(), itemDTO.getQtyOnHand(), itemDTO.getUnitPrice());
-        return itemDAO.save(itemEntity);
+        return itemDAO.save(itemEntity,connection);
     }
 
     @Override
     public boolean updateItem(ItemDTO itemDTO , Connection connection) {
         ItemEntity itemEntity = new ItemEntity(itemDTO.getCode(), itemDTO.getDescription(), itemDTO.getQtyOnHand(), itemDTO.getUnitPrice());
-        return itemDAO.update(itemEntity);
+        return itemDAO.update(itemEntity,connection);
 
     }
 
     @Override
     public boolean deleteItem(String code ,Connection connection) {
 
-        return itemDAO.delete(code);
+        return itemDAO.delete(code,connection);
     }
 }

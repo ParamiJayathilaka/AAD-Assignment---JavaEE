@@ -1,5 +1,10 @@
 package api;
 
+import bo.BOFactory;
+import bo.custom.CustomerBO;
+import bo.custom.ItemBO;
+import dto.CustomerDTO;
+import dto.ItemDTO;
 import entity.ItemEntity;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
@@ -10,6 +15,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -21,16 +29,28 @@ import java.util.List;
         @WebInitParam(name = "password", value = "1234")
 })
 public class ItemServlet extends HttpServlet {
+
+
+    ItemBO itemBO = BOFactory.getBOFactory().getBO(BOFactory.BOTypes.ITEMBO);
     String url;
     String username;
     String password;
+    DataSource source;
 
     @Override
     public void init() throws ServletException {
-        url = getServletConfig().getInitParameter("url");
-        username = getServletConfig().getInitParameter("username");
-        password = getServletConfig().getInitParameter("password");
+//        url = getServletConfig().getInitParameter("url");
+//        username = getServletConfig().getInitParameter("username");
+//        password = getServletConfig().getInitParameter("password");
+
+        try {
+            InitialContext initCtx = new InitialContext();
+            source = (DataSource)initCtx.lookup("java:comp/env/jdbc/pos");
+        }catch (NamingException e) {
+            e.printStackTrace();
+        }
     }
+
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -67,16 +87,17 @@ public class ItemServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Jsonb jsonb = JsonbBuilder.create();
-        ItemEntity item = jsonb.fromJson(req.getReader(), ItemEntity.class);
-        String code = item.getCode();
-        String description = item.getDescription();
-        int qtyOnHand = item.getQtyOnHand();
-        double unitPrice = item.getUnitPrice();
+//        ItemEntity item = jsonb.fromJson(req.getReader(), ItemEntity.class);
+        ItemDTO itemDTO  = jsonb.fromJson(req.getReader(), ItemDTO.class);
+        String code = itemDTO.getCode();
+        String description = itemDTO.getDescription();
+        int qtyOnHand = itemDTO.getQtyOnHand();
+        double unitPrice = itemDTO.getUnitPrice();
 
 
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection(url, username, password);
+        try (Connection connection = source.getConnection()){
+//            Class.forName("com.mysql.cj.jdbc.Driver");
+//            Connection connection = DriverManager.getConnection(url, username, password);
 
             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO item(code , description , qtyOnHand ,unitPrice) VALUES (?,?,?,?)");
             preparedStatement.setString(1, code);
@@ -92,7 +113,7 @@ public class ItemServlet extends HttpServlet {
             }
 
 
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }

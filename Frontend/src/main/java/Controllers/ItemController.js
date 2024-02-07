@@ -1,4 +1,4 @@
-import {item} from "../Module/Item.js";
+import {item} from "../Module/Item";
 
 $("#getAll").click(function () {
 
@@ -22,40 +22,165 @@ function bindTrEvents() {
     })
 }
 
-$("#btnItemUpdate").click(function () {
-    let code = $("#inputItemCode").val();
 
+$("#btnItemDelete").click(function () {
+    let code = $("#inputItemCode").val();
+    console.log(code);
     let consent = confirm("Do you want to delete.?");
     if (consent) {
         let response = deleteItem(code);
+        alert(response);
         if (response) {
-            alert("Item Deleted");
+            alert(" Item Not Removed..!");
+
+        } else {
+            alert("Item Deleted ");
             clearItemInputFields();
             getAllItem();
-        } else {
-            alert("Item Not Removed..!");
         }
     }
 });
 
 $("#btnItemUpdate").click(function () {
     let code = $("#inputItemCode").val();
-    updateCustomer(id);
-    clearCustomerInputFields();
+    updateItem(code);
+    clearItemInputFields();
 });
 
 
 
+//clear textField
+$("#btn-clear").click(function () {
+    clearItemInputFields();
+
+});
+
+// Save Customer
+function saveItem() {
+    let newItem = Object.assign({}, item);
+    newItem.code = $("#inputItemCode").val();
+    newItem.description = $("#inputItemName").val();
+    newItem.qtyOnHand = $("#inputItemQty").val();
+    newItem.unitPrice = $("#inputItemPrice").val();
+    console.log(newItem)
+
+    $.ajax({
+        url:  "http://localhost:8080/assignment/item",
+        method: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(newItem),
+        success: function (resp, status, xhr) {
+            if (xhr.status === 200) {
+                alert(resp)
+                getAllItem();
+            }
+        },
+        error: function (xhr) {
+            alert(xhr.responseText)
+        }
+    })
+
+}
 
 
+function getAllItem() {
 
 
+    $.ajax({
+        url: "http://localhost:8080/assignment/item",
+        method: "GET",
+        success: function (resp, status, xhr){
+
+            if(xhr.status===200){
+                console.log(resp)
+                let cusBody = $("#tblItem");
+                cusBody.empty();
+                for(let item of resp){
+                    cusBody.append(`
+                        <tr>
+                            <th scope="row">${item.code}</th>
+                            <td>${item.description}</td>
+                            <td>${item.qtyOnHand}</td>
+                            <td>${item.unitPrice}</td>
+                        </tr>`);
+                }
+            }
+        }
+    })
+
+}
 
 
+function deleteItem(code) {
+
+    $.ajax({
+        url: "http://localhost:8080/assignment/customer?code=" + code,
+        method: "DELETE",
+        success: function (resp, status, xhr){
+
+            if(xhr.status===200){
+                return true;
+
+            }
+        },
+        error: function (xhr){
+            return false;
+
+        }
+    })
+
+}
 
 
+function searchItem(code) {
+    return itemDB.find(function (item) {
+        return item.code == code;
+    });
+}
+
+function updateItem(code) {
+
+    let newItem = Object.assign({}, item);
+    newItem.code = $("#inputItemCode").val();
+    newItem.description = $("#inputItemName").val();
+    newItem.qtyOnHand = $("#inputItemQty").val();
+    newItem.unitPrice = $("#inputItemPrice").val();
+    console.log(newItem)
+
+    $.ajax({
+        url:  "http://localhost:8080/assignment/item",
+        method: "PUT",
+        contentType: "application/json",
+        data: JSON.stringify(newItem),
+        success: function (resp, status, xhr) {
+            if (xhr.status === 200) {
+                alert(resp)
+                getAllItem();
+            }
+        },
+        error: function (xhr) {
+            alert(xhr.responseText)
+        }
+    })
+
+}
 
 
+$(document).on('click', '#ItemTbl > tr', function() {
+    let code = $(this).children().eq(0).text();
+    let description = $(this).children().eq(1).text();
+    let qtyOnHand = $(this).children().eq(2).text();
+    let unitPrice = $(this).children().eq(3).text();
+
+    setTextFieldValues(code,description,qtyOnHand,unitPrice);
+});
+
+function setTextFieldValues(code,description,qtyOnHand,unitPrice) {
+    $("#inputItemCode").val(code);
+    $("#inputItemName").val(description);
+    $("#inputItemQty").val(qtyOnHand);
+    $("#inputItemPrice").val(unitPrice);
+}
 
 
 

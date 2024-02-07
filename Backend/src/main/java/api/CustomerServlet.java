@@ -108,7 +108,7 @@ public class CustomerServlet extends HttpServlet {
             }
 
 
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }

@@ -7,6 +7,7 @@ import dto.CustomerDTO;
 import entity.CustomerEntity;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class CustomerBOImpl implements CustomerBO {
 
     @Override
     public List<CustomerDTO> getAllCustomer(Connection connection) {
-        List<CustomerEntity> customerEntityList = customerDAO.getAll();
+        List<CustomerEntity> customerEntityList = customerDAO.getAll(connection );
         List<CustomerDTO> customerDTOList = new ArrayList<>();
         CustomerDTO customerDTO;
 
@@ -30,21 +31,21 @@ public class CustomerBOImpl implements CustomerBO {
 
 
     @Override
-    public boolean saveCustomer(CustomerDTO customerDTO , Connection connection) {
+    public boolean saveCustomer(CustomerDTO customerDTO , Connection connection) throws SQLException {
         CustomerEntity customerEntity = new CustomerEntity(customerDTO.getId(), customerDTO.getName(), customerDTO.getAddress());
-        return customerDAO.save(customerEntity);
+        return customerDAO.save(customerEntity , connection);
     }
 
     @Override
     public boolean updateCustomer(CustomerDTO customerDTO ,Connection connection) {
         CustomerEntity customerEntity = new CustomerEntity(customerDTO.getId(), customerDTO.getName(), customerDTO.getAddress());
-        return customerDAO.update(customerEntity);
+        return customerDAO.update(customerEntity,connection);
     }
 
     @Override
     public boolean deleteCustomer(String id ,Connection connection) {
 
-        return customerDAO.delete(id);
+        return customerDAO.delete(id , connection);
     }
 
 }

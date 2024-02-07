@@ -1,5 +1,10 @@
 package api;
 
+import bo.BOFactory;
+import bo.custom.CustomerBO;
+import bo.custom.OrderBO;
+import dto.ItemDTO;
+import dto.OrderDTO;
 import entity.OrderEntity;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
@@ -10,6 +15,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -21,15 +29,25 @@ import java.util.List;
         @WebInitParam(name = "password", value = "1234")
 })
 public class OrdersServlet extends HttpServlet {
+    CustomerBO customerBO = BOFactory.getBOFactory().getBO(BOFactory.BOTypes.CUSTOMERBO);
+    OrderBO orderBO = BOFactory.getBOFactory().getBO(BOFactory.BOTypes.ORDERBO);
     String url;
     String username;
     String password;
+    DataSource source;
 
     @Override
     public void init() throws ServletException {
-        url = getServletConfig().getInitParameter("url");
-        username = getServletConfig().getInitParameter("username");
-        password = getServletConfig().getInitParameter("password");
+//        url = getServletConfig().getInitParameter("url");
+//        username = getServletConfig().getInitParameter("username");
+//        password = getServletConfig().getInitParameter("password");
+
+        try {
+            InitialContext initCtx = new InitialContext();
+            source = (DataSource)initCtx.lookup("java:comp/env/jdbc/pos");
+        }catch (NamingException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -67,15 +85,16 @@ public class OrdersServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         Jsonb jsonb = JsonbBuilder.create();
-        OrderEntity order = jsonb.fromJson(req.getReader(), OrderEntity.class);
-        String oid = order.getOid();
-        String date = order.getDate();
-        String customerId = order.getCustomerId();
-        System.out.println(order);
+//        OrderEntity order = jsonb.fromJson(req.getReader(), OrderEntity.class);
+        OrderDTO orderDTO  = jsonb.fromJson(req.getReader(), OrderDTO.class);
+        String oid = orderDTO.getOid();
+        String date = orderDTO.getDate();
+        String customerId = orderDTO.getCustomerId();
+        System.out.println(orderDTO);
 
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection(url, username, password);
+        try(Connection connection = source.getConnection()) {
+//            Class.forName("com.mysql.cj.jdbc.Driver");
+//            Connection connection = DriverManager.getConnection(url, username, password);
 
             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO orders (oid , date , customerId ) VALUES (?,?,?)");
             preparedStatement.setString(1, oid);
@@ -91,7 +110,7 @@ public class OrdersServlet extends HttpServlet {
             }
 
 
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }

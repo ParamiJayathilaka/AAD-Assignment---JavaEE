@@ -10,6 +10,7 @@ import entity.ItemEntity;
 import entity.OrderEntity;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class OrderBOImpl implements OrderBO {
     OrderDAO orderDAO = DAOFactory.getDaoFactory().getDAO(DAOFactory.DAOTypes.ORDERDAO);
     @Override
     public List<OrderDTO> getAllOrder(Connection connection) {
-        List<OrderEntity> orderEntityList = orderDAO.getAll();
+        List<OrderEntity> orderEntityList = orderDAO.getAll(connection);
         List<OrderDTO> orderDTOList = new ArrayList<>();
         OrderDTO orderDTO;
 
@@ -30,19 +31,19 @@ public class OrderBOImpl implements OrderBO {
     }
 
     @Override
-    public boolean saveOrder(OrderDTO orderDTO , Connection connection) {
+    public boolean saveOrder(OrderDTO orderDTO , Connection connection) throws SQLException {
         OrderEntity orderEntity = new OrderEntity(orderDTO.getOid(), orderDTO.getDate(),orderDTO.getCustomerId());
-        return orderDAO.save(orderEntity);
+        return orderDAO.save(orderEntity,connection);
     }
 
     @Override
     public boolean updateOrder(OrderDTO orderDTO ,Connection connection) {
         OrderEntity orderEntity = new OrderEntity(orderDTO.getOid(), orderDTO.getDate(),orderDTO.getCustomerId());
-        return orderDAO.update(orderEntity);
+        return orderDAO.update(orderEntity,connection);
     }
 
     @Override
     public boolean deleteOrder(String oid , Connection connection) {
-        return orderDAO.delete(oid);
+        return orderDAO.delete(oid,connection);
     }
 }
