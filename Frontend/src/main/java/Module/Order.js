@@ -1,4 +1,4 @@
-let order = {
+export let order = {
     oid:"",
     date:"",
     customerID:"",

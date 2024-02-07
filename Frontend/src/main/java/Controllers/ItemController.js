@@ -1,3 +1,65 @@
+import {item} from "../Module/Item.js";
+
+$("#getAll").click(function () {
+
+    getAllItem();
+});
+
+
+function bindTrEvents() {
+    $('#tblItem>tr').click(function () {
+        // $("#txtCustomerID,#txtCustomerName,#txtCustomerAddress,#txtCustomerSalary").css("border", "2px solid blue");
+        let code = $(this).children().eq(0).text();
+        let description = $(this).children().eq(1).text();
+        let qtyOnHand = $(this).children().eq(2).text();
+        let unitPrice = $(this).children().eq(3).text();
+
+        //set the selected rows data to the input fields
+        $("#inputItemCode").val(code);
+        $("#inputItemName").val(description);
+        $("#inputItemQty").val(qtyOnHand);
+        $("#inputItemPrice").val(unitPrice);
+    })
+}
+
+$("#btnItemUpdate").click(function () {
+    let code = $("#inputItemCode").val();
+
+    let consent = confirm("Do you want to delete.?");
+    if (consent) {
+        let response = deleteItem(code);
+        if (response) {
+            alert("Item Deleted");
+            clearItemInputFields();
+            getAllItem();
+        } else {
+            alert("Item Not Removed..!");
+        }
+    }
+});
+
+$("#btnItemUpdate").click(function () {
+    let code = $("#inputItemCode").val();
+    updateCustomer(id);
+    clearCustomerInputFields();
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // getAllItems();
 //
 // $("#btnItem").click(function () {

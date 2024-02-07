@@ -2,16 +2,7 @@
 
 import {customer} from "../Module/Customer.js";
 
-$("#btnCustomer").click(function () {
 
-    saveCustomer()
-    // if (checkAllCus()){
-    //     saveCustomer();
-    // }else{
-    //     alert("Error");
-    // }
-
-});
 
 $("#getAll").click(function () {
 
@@ -69,12 +60,13 @@ $("#btn-clear1").click(function () {
 // Save Customer
 function saveCustomer() {
     let newCustomer = Object.assign({}, customer);
-    newCustomer.cusID = $("#txtCustomerID").val();
-    newCustomer.cusName = $("#txtCustomerName").val();
-    newCustomer.cusAddress = $("#txtCustomerAddress").val();
+    newCustomer.id = $("#txtCustomerID").val();
+    newCustomer.name = $("#txtCustomerName").val();
+    newCustomer.address = $("#txtCustomerAddress").val();
+    console.log(newCustomer)
 
     $.ajax({
-        url:  "http://localhost:8080/Backend/customer",
+        url:  "http://localhost:8080/assignment/customer",
         method: "POST",
         contentType: "application/json",
         data: JSON.stringify(newCustomer),
@@ -122,7 +114,7 @@ function getAllCustomers() {
 
 
     $.ajax({
-        url: "http://localhost:8080/Backend/customer",
+        url: "http://localhost:8080/assignment/customer",
         method: "GET",
         success: function (resp, status, xhr){
 
