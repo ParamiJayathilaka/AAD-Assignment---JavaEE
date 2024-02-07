@@ -1,3 +1,5 @@
+package dto;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -5,9 +7,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class OrderEntity {
+public class OrderDetailsDTO {
     private String oid;
-    private String date;
-    private String customerId;
-
+    private String code;
+    private int qty;
+    private boolean unitPrice;
 }

@@ -5,9 +5,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class OrderEntity {
+public class OrderDetailsEntity {
     private String oid;
-    private String date;
-    private String customerId;
+    private String code;
+    private int qty;
+    private boolean unitPrice;
+
 
 }

@@ -29,16 +29,18 @@ function bindTrEvents() {
 
 $("#btnCusDelete").click(function () {
     let id = $("#txtCustomerID").val();
-
+    console.log(id);
     let consent = confirm("Do you want to delete.?");
     if (consent) {
         let response = deleteCustomer(id);
+        alert(response);
         if (response) {
-            alert("Customer Deleted");
+            alert(" Customer Not Removed..!");
+
+        } else {
+            alert("Customer Deleted ");
             clearCustomerInputFields();
             getAllCustomers();
-        } else {
-            alert("Customer Not Removed..!");
         }
     }
 });
@@ -155,13 +157,40 @@ function getAllCustomers() {
 
 
 function deleteCustomer(id) {
-    for (let i = 0; i < customerDB.length; i++) {
-        if (customerDB[i].id == id) {
-            customerDB.splice(i, 1);
-            return true;
+
+    $.ajax({
+        url: "http://localhost:8080/assignment/customer?id=" + id,
+        method: "DELETE",
+        success: function (resp, status, xhr){
+
+            if(xhr.status===200){
+                return true;
+                // console.log(resp)
+                // let cusBody = $("#tblCustomer");
+                // cusBody.empty();
+                // for(let customer of resp){
+                //     cusBody.append(`
+                //         <tr>
+                //             <th scope="row">${customer.id}</th>
+                //             <td>${customer.name}</td>
+                //             <td>${customer.address}</td>
+                //         </tr>`);
+                // }
+            }
+        },
+        error: function (xhr){
+           return false;
+
         }
-    }
-    return false;
+    })
+
+    // for (let i = 0; i < customerDB.length; i++) {
+    //     if (customerDB[i].id == id) {
+    //         customerDB.splice(i, 1);
+    //         return true;
+    //     }
+    // }
+    // return false;
 }
 
 
@@ -172,26 +201,48 @@ function searchCustomer(id) {
 }
 
 function updateCustomer(id) {
-    if (searchCustomer(id) == undefined) {
-        alert("No Customer find..please check the ID");
-    } else {
-        let consent = confirm("Do you really want to update this customer.?");
-        if (consent) {
-            let customer = searchCustomer(id);
 
-            let customerID = $("#txtCustomerID").val();
-            let customerName = $("#txtCustomerName").val();
-            let customerAddress = $("#txtCustomerAddress").val();
-            let customerSalary = $("#txtCustomerSalary").val();
+    let newCustomer = Object.assign({}, customer);
+    newCustomer.id = $("#txtCustomerID").val();
+    newCustomer.name = $("#txtCustomerName").val();
+    newCustomer.address = $("#txtCustomerAddress").val();
+    console.log(newCustomer)
 
-            customer.id = customerID;
-            customer.name = customerName;
-            customer.address = customerAddress;
-            customer.salary = customerSalary;
-
-            getAllCustomers();
+    $.ajax({
+        url:  "http://localhost:8080/assignment/customer",
+        method: "PUT",
+        contentType: "application/json",
+        data: JSON.stringify(newCustomer),
+        success: function (resp, status, xhr) {
+            if (xhr.status === 200) {
+                alert(resp)
+                getAllCustomers();
+            }
+        },
+        error: function (xhr) {
+            alert(xhr.responseText)
         }
-    }
+    })
+    // if (searchCustomer(id) == undefined) {
+    //     alert("No Customer find..please check the ID");
+    // } else {
+    //     let consent = confirm("Do you really want to update this customer.?");
+    //     if (consent) {
+    //         let customer = searchCustomer(id);
+    //
+    //         let customerID = $("#txtCustomerID").val();
+    //         let customerName = $("#txtCustomerName").val();
+    //         let customerAddress = $("#txtCustomerAddress").val();
+    //         let customerSalary = $("#txtCustomerSalary").val();
+    //
+    //         customer.id = customerID;
+    //         customer.name = customerName;
+    //         customer.address = customerAddress;
+    //         customer.salary = customerSalary;
+    //
+    //         getAllCustomers();
+    //     }
+    // }
 }
 
 

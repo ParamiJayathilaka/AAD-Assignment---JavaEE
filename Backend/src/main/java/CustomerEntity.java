@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 
 public class CustomerEntity {
-    String id;
-    String name;
-    String address;
+    private String id;
+    private String name;
+    private String address;
 
 }
