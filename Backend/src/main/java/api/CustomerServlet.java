@@ -1,5 +1,9 @@
 package api;
 
+import bo.BOFactory;
+import bo.custom.CustomerBO;
+import dto.CustomerDTO;
+import entity.CustomerEntity;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 import jakarta.servlet.ServletException;
@@ -9,6 +13,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -21,16 +28,26 @@ import java.util.List;
 })
 public class CustomerServlet extends HttpServlet {
 
+    CustomerBO customerBO = BOFactory.getBOFactory().getBO(BOFactory.BOTypes.CUSTOMERBO);
+
     String url;
     String username;
     String password;
+    DataSource source;
 
     @Override
     public void init() throws ServletException {
 
-        url = getServletConfig().getInitParameter("url");
-        username = getServletConfig().getInitParameter("username");
-        password = getServletConfig().getInitParameter("password");
+//        url = getServletConfig().getInitParameter("url");
+//        username = getServletConfig().getInitParameter("username");
+//        password = getServletConfig().getInitParameter("password");
+
+        try {
+            InitialContext initCtx = new InitialContext();
+            source = (DataSource)initCtx.lookup("java:comp/env/jdbc/pos");
+        }catch (NamingException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -67,15 +84,16 @@ public class CustomerServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Jsonb jsonb = JsonbBuilder.create();
-        CustomerEntity customer = jsonb.fromJson(req.getReader(), CustomerEntity.class);
-        String id = customer.getId();
-        String name = customer.getName();
-        String address = customer.getAddress();
+//        CustomerEntity customer = jsonb.fromJson(req.getReader(), CustomerEntity.class);
+        CustomerDTO customerDTO = jsonb.fromJson(req.getReader(), CustomerDTO.class);
+        String id = customerDTO.getId();
+        String name = customerDTO.getName();
+        String address = customerDTO.getAddress();
 
+        try (Connection connection = source.getConnection()){
 
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection(url, username, password);
+//            Class.forName("com.mysql.cj.jdbc.Driver");
+//            Connection connection = DriverManager.getConnection(url, username, password);
 
             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO customer(id , name , address) VALUES (?,?,?)");
             preparedStatement.setString(1, id);

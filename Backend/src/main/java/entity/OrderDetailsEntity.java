@@ -1,3 +1,5 @@
+package entity;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -5,9 +7,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class ItemEntity {
+public class OrderDetailsEntity {
+    private String oid;
     private String code;
-    private String description;
-    private int qtyOnHand;
-    private double unitPrice;
+    private int qty;
+    private boolean unitPrice;
+
+
 }

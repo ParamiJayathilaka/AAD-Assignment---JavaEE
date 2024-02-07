@@ -1,5 +1,6 @@
 package api;
 
+import entity.OrderEntity;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 import jakarta.servlet.ServletException;
