@@ -41,6 +41,23 @@ $("#btnItemDelete").click(function () {
     }
 });
 
+$("#btnItemDelete").click(function () {
+    let code = $("#inputItemCode").val();
+    console.log(code);
+    let consent = confirm("Do you want to delete.?");
+    if (consent) {
+        deleteItem(code, function(response) {
+            if (response) {
+                alert("Item Deleted ");
+                clearItemInputFields();
+                getAllItem();
+            } else {
+                alert("Item Not Removed..!");
+            }
+        });
+    }
+});
+
 $("#btnItemUpdate").click(function () {
     let code = $("#inputItemCode").val();
     updateItem(code);

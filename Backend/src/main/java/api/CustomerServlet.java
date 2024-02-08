@@ -154,7 +154,6 @@ public class CustomerServlet extends HttpServlet {
 //            preparedStatement.setString(1, id);
             //            boolean isDeleted = preparedStatement.executeUpdate() > 0;
 
-
             boolean isDeleted = customerBO.deleteCustomer(id, connection);
 
             if (isDeleted){
