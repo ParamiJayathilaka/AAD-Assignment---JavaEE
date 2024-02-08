@@ -11,7 +11,7 @@ public class OrderDetailsEntity {
     private String oid;
     private String code;
     private int qty;
-    private boolean unitPrice;
+    private double unitPrice;
 
 
 }

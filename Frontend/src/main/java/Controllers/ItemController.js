@@ -1,4 +1,4 @@
-import {item} from "../Module/Item";
+import {item} from "../Module/Item.js";
 
 $("#getAll").click(function () {
 

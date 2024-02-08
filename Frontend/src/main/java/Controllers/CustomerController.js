@@ -59,6 +59,10 @@ $("#btn-clear1").click(function () {
 
 });
 
+$("#btnCustomer").click(function () {
+    saveCustomer();
+    getAllCustomers();
+})
 // Save Customer
 function saveCustomer() {
     let newCustomer = Object.assign({}, customer);

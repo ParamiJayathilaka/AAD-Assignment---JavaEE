@@ -14,11 +14,11 @@ public interface ItemDAO extends CrudDAO<ItemEntity> {
     boolean save(ItemEntity dto, Connection connection) throws SQLException;
 
     @Override
-    boolean update(ItemEntity dto, Connection connection);
+    boolean update(ItemEntity dto, Connection connection) throws SQLException;
 
     @Override
-    boolean delete(String id, Connection connection);
+    boolean delete(String code, Connection connection) throws SQLException;
 
     @Override
-    List<ItemEntity> getAll(Connection connection);
+    List<ItemEntity> getAll(Connection connection) throws SQLException;
 }

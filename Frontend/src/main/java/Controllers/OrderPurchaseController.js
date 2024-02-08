@@ -1,6 +1,6 @@
 
 
-import {item} from "../Module/Item";
+// import {item} from "../Module/Item";
 // import(orderDetails) from "../Module/Order"
 
 $("#getAll").click(function () {
@@ -12,16 +12,15 @@ $("#getAll").click(function () {
 function bindTrEvents() {
     $('#tblOrder>tr').click(function () {
         // $("#txtCustomerID,#txtCustomerName,#txtCustomerAddress,#txtCustomerSalary").css("border", "2px solid blue");
-        let code = $(this).children().eq(0).text();
-        let description = $(this).children().eq(1).text();
-        let qtyOnHand = $(this).children().eq(2).text();
-        let unitPrice = $(this).children().eq(3).text();
+        let oid = $(this).children().eq(0).text();
+        let date = $(this).children().eq(1).text();
+
+
 
         //set the selected rows data to the input fields
-        $("#inputItemCode").val(code);
-        $("#inputItemName").val(description);
-        $("#inputItemQty").val(qtyOnHand);
-        $("#inputItemPrice").val(unitPrice);
+        $("#OrderId").val(oid);
+        $("#date").val(date);
+
     })
 }
 

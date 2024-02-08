@@ -16,7 +16,7 @@ public class CustomerBOImpl implements CustomerBO {
     CustomerDAO customerDAO = DAOFactory.getDaoFactory().getDAO(DAOFactory.DAOTypes.CUSTOMERDAO);
 
     @Override
-    public List<CustomerDTO> getAllCustomer(Connection connection) {
+    public List<CustomerDTO> getAllCustomer(Connection connection) throws SQLException {
         List<CustomerEntity> customerEntityList = customerDAO.getAll(connection );
         List<CustomerDTO> customerDTOList = new ArrayList<>();
         CustomerDTO customerDTO;
@@ -29,21 +29,34 @@ public class CustomerBOImpl implements CustomerBO {
 
     }
 
+//    @Override
+//    public List<CustomerDTO> saveCustomer(Connection connection) throws SQLException {
+//        boolean customerEntityList = customerDAO.save(connection);
+//        List<CustomerDTO> customerDTOList = new ArrayList<>();
+//        CustomerDTO customerDTO;
+//
+//        for (CustomerEntity customer : customerEntityList){
+//            customerDTO = new CustomerDTO(customer.getId(), customer.getName(), customer.getAddress());
+//            customerDTOList.add(customerDTO);
+//        }
+//        return customerDTOList;
+//    }
 
     @Override
     public boolean saveCustomer(CustomerDTO customerDTO , Connection connection) throws SQLException {
+
         CustomerEntity customerEntity = new CustomerEntity(customerDTO.getId(), customerDTO.getName(), customerDTO.getAddress());
         return customerDAO.save(customerEntity , connection);
     }
 
     @Override
-    public boolean updateCustomer(CustomerDTO customerDTO ,Connection connection) {
+    public boolean updateCustomer(CustomerDTO customerDTO ,Connection connection) throws SQLException {
         CustomerEntity customerEntity = new CustomerEntity(customerDTO.getId(), customerDTO.getName(), customerDTO.getAddress());
         return customerDAO.update(customerEntity,connection);
     }
 
     @Override
-    public boolean deleteCustomer(String id ,Connection connection) {
+    public boolean deleteCustomer(String id ,Connection connection) throws SQLException {
 
         return customerDAO.delete(id , connection);
     }

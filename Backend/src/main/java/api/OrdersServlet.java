@@ -23,17 +23,18 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet(name = "orderServlet" , value = "/orders" ,initParams = {
-        @WebInitParam(name = "url", value = "jdbc:mysql://localhost:3306/company"),
-        @WebInitParam(name = "username", value = "root"),
-        @WebInitParam(name = "password", value = "1234")
-})
+@WebServlet(name = "orderServlet" , value = "/orders" )
+//,initParams = {
+//        @WebInitParam(name = "url", value = "jdbc:mysql://localhost:3306/company"),
+//        @WebInitParam(name = "username", value = "root"),
+//        @WebInitParam(name = "password", value = "1234")
+//})
 public class OrdersServlet extends HttpServlet {
     CustomerBO customerBO = BOFactory.getBOFactory().getBO(BOFactory.BOTypes.CUSTOMERBO);
     OrderBO orderBO = BOFactory.getBOFactory().getBO(BOFactory.BOTypes.ORDERBO);
-    String url;
-    String username;
-    String password;
+//    String url;
+//    String username;
+//    String password;
     DataSource source;
 
     @Override
@@ -55,28 +56,29 @@ public class OrdersServlet extends HttpServlet {
 
         resp.setContentType("application/json");
 
-        List<OrderEntity> orderEntityList = new ArrayList<>();
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection(url, username, password);
+//        List<OrderEntity> orderEntityList = new ArrayList<>();
+        try( Connection connection = source.getConnection()) {
+//            Class.forName("com.mysql.cj.jdbc.Driver");
+//            Connection connection = DriverManager.getConnection(url, username, password);
+//
+//            PreparedStatement preparedStatement = connection.prepareStatement("SELECT  * FROM orders");
+//            ResultSet resultSet = preparedStatement.executeQuery();
+//
+//            while (resultSet.next()) {
+//                String oid = resultSet.getString(1);
+//                String date = resultSet.getString(2);
+//                String customerId = resultSet.getString(3);
+//
+//                OrderEntity order = new OrderEntity(oid, date, customerId);
+//                orderEntityList.add(order);
+//
+//            }
 
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT  * FROM orders");
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                String oid = resultSet.getString(1);
-                String date = resultSet.getString(2);
-                String customerId = resultSet.getString(3);
-
-                OrderEntity order = new OrderEntity(oid, date, customerId);
-                orderEntityList.add(order);
-
-            }
-
+            List<OrderDTO> allOrders = orderBO.getAllOrder(connection);
             Jsonb jsonb = JsonbBuilder.create();
-            jsonb.toJson(orderEntityList, resp.getWriter());
+            jsonb.toJson(allOrders, resp.getWriter());
 
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -96,13 +98,14 @@ public class OrdersServlet extends HttpServlet {
 //            Class.forName("com.mysql.cj.jdbc.Driver");
 //            Connection connection = DriverManager.getConnection(url, username, password);
 
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO orders (oid , date , customerId ) VALUES (?,?,?)");
-            preparedStatement.setString(1, oid);
-            preparedStatement.setString(2, date);
-            preparedStatement.setString(3, customerId);
-
-
-            boolean isSaved = preparedStatement.executeUpdate() > 0;
+//            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO orders (oid , date , customerId ) VALUES (?,?,?)");
+//            preparedStatement.setString(1, oid);
+//            preparedStatement.setString(2, date);
+//            preparedStatement.setString(3, customerId);
+//
+//
+//            boolean isSaved = preparedStatement.executeUpdate() > 0;
+            boolean isSaved = orderBO.saveOrder(orderDTO, connection);
             if (isSaved){
                 resp.getWriter().println("Order Saved");
             }else {
@@ -119,30 +122,31 @@ public class OrdersServlet extends HttpServlet {
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         Jsonb jsonb = JsonbBuilder.create();
-        OrderEntity order = jsonb.fromJson(req.getReader(), OrderEntity.class);
+        OrderDTO order = jsonb.fromJson(req.getReader(), OrderDTO.class);
         String oid = order.getOid();
         String date = order.getDate();
         String customerId = order.getCustomerId();
 
 
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection(url, username, password);
-
-            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE orders SET date=?, customerId=? WHERE oid=? ");
-            preparedStatement.setString(3, oid);
-            preparedStatement.setString(1, date);
-            preparedStatement.setString(2, customerId);
-
-
-            boolean isUpdate = preparedStatement.executeUpdate() > 0;
+        try (Connection connection = source.getConnection()) {
+//            Class.forName("com.mysql.cj.jdbc.Driver");
+//            Connection connection = DriverManager.getConnection(url, username, password);
+//
+//            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE orders SET date=?, customerId=? WHERE oid=? ");
+//            preparedStatement.setString(3, oid);
+//            preparedStatement.setString(1, date);
+//            preparedStatement.setString(2, customerId);
+//
+//
+//            boolean isUpdate = preparedStatement.executeUpdate() > 0;
+            boolean isUpdate = orderBO.updateOrder(order,connection);
             if (isUpdate){
                 resp.getWriter().println("Order Update");
             }else {
                 resp.getWriter().println("Order Update Fail");
             }
 
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -153,21 +157,22 @@ public class OrdersServlet extends HttpServlet {
 
         String oid = req.getParameter("oid");
 
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection(url, username, password);
-
-            PreparedStatement preparedStatement = connection.prepareStatement("DELETE  FROM orders WHERE  oid=?");
-            preparedStatement.setString(1, oid);
-
-            boolean isDeleted = preparedStatement.executeUpdate() > 0;
+        try (Connection connection = source.getConnection()){
+//            Class.forName("com.mysql.cj.jdbc.Driver");
+//            Connection connection = DriverManager.getConnection(url, username, password);
+//
+//            PreparedStatement preparedStatement = connection.prepareStatement("DELETE  FROM orders WHERE  oid=?");
+//            preparedStatement.setString(1, oid);
+//
+//            boolean isDeleted = preparedStatement.executeUpdate() > 0;
+            boolean isDeleted = orderBO.deleteOrder(oid, connection);
             if (isDeleted){
                 resp.getWriter().println("Order Deleted");
             }else {
                 resp.getWriter().println("Order Deleted Fail");
             }
 
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
